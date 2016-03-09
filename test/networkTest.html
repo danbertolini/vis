@@ -1,140 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Network | Basic usage</title>
-
-    <script type="text/javascript" src="../dist/vis.js"></script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+    <script type="text/javascript" src="../dist/vis.js"></script> <!-- network handling framework -->
     <link href="../dist/vis.css" rel="stylesheet" type="text/css"/>
-
     <style type="text/css">
-        #mynetwork {
-            width: 1400px;
-            height: 1000px;
+        #network{
+            width: 1200px;
+            height: 800px;
             border: 1px solid lightgray;
         }
     </style>
-    <script type="text/javascript">
-    </script>
 </head>
-
 <body>
-<my-toolbar>
-    <button id="toggleAddNode">add Nodes</button>
-    <button id="btnDelete">delete</button>
-    <!-- other Vis manipulation buttons -->
-    <button id="togglePhysics">pause Physics</button>
-    <button id="togglePin">toggle pin</button>
-</my-toolbar>
-<div id="mynetwork"></div>
-<script>
-    document.getElementById("toggleAddNode").onclick = addNode;
-    document.getElementById("btnDelete").onclick = visDelete;
-    document.getElementById("togglePhysics").onclick = togglePhysics;
-    document.getElementById("togglePin").onclick = togglePin;
+<h1>Network Test</h1>
+<div id="network"></div>
 
-    function storePositions() {
-        network.storePositions();
-    }
-
-    var inAddNodeMode = false;
-
-    function addNode() {
-        if (inAddNodeMode) {
-            network.disableEditMode();
-            inAddNodeMode = false;
-        } else {
-            network.addNodeMode();
-            inAddNodeMode = true;
-        }
-    }
-
-    function visDelete() {
-        network.deleteSelected();
-    }
-
-    function togglePhysics() {
-        isPhysicsEnabled = !isPhysicsEnabled;
-        network.setOptions({
-            physics: isPhysicsEnabled
-        });
-    }
-    var isPhysicsEnabled = true;
-
-    function togglePin() {
-        network.storePositions();
-        // update node.fixed
-    }
-
-    // create an array with nodes
-    var nodes = new vis.DataSet([{
-        id: 1,
-        label: 'Node 1'
-    }, {
-        id: 2,
-        label: 'Node 2'
-    }, {
-        id: 3,
-        label: 'Node 3'
-    }, {
-        id: 4,
-        label: 'Node 4'
-    }, {
-        id: 5,
-        label: 'Node 5'
-    }]);
-
-    // create an array with edges
-    var edges = new vis.DataSet([{
-        from: 1,
-        to: 3
-    }, {
-        from: 1,
-        to: 2
-    }, {
-        from: 2,
-        to: 4
-    }, {
-        from: 2,
-        to: 5
-    }]);
+<script type="text/javascript">
+    // create a network
+    var container = document.getElementById('network');
+    var nodes = new vis.DataSet([]);
+    var edges = new vis.DataSet([]);
 
     // create a network
-    var container = document.getElementById('mynetwork');
     var data = {
         nodes: nodes,
         edges: edges
     };
+//    data.nodes.update({id: 0, label: 'node 1'});
+    var fontFace = 'roboto,"helvetica neue","segoe ui",arial,helvetica,sans-serif';
     var options = {
-        manipulation: {
-            enabled: false,
-            initiallyActive: false,
-            addNode: false,
-            //addEdge: onConnectEdge,
-            //editNode: onEditNode,
-            //editEdge: true,
-            deleteNode: onDelete,
-            // this is false, but the manipulation api can still delete edges
-            deleteEdge: false
+        autoResize: true,
+        interaction: {
+            hover: true
+        },
+        width: '100%',
+        height: '400px',
+        nodes: {
+            shape: 'dot',
+            font: {
+                size: 13,
+                face: fontFace,
+                strokeColor: '#fff',
+                strokeWidth: 5
+            }
         }
     };
-
-    function onAddNode(nodeToBeAdded, callback) {
-        //$log.debug('onAdd', nodeToBeAdded);
-        console.log('onAdd');
-        // do stuff to the new node
-        inAddNodeMode = false;
-        callback(nodeToBeAdded);
-    }
-
-    function onDelete(toBeDeletedData, callback) {
-        console.log('deleting data', toBeDeletedData);
-        // toBeDeletedData is object with nodes: [] and edges: []
-
-        callback(toBeDeletedData);
-    }
-
-
     var network = new vis.Network(container, data, options);
+
+    function info(s) {
+        document.getElementById('num').innerText += s + '\n';
+    }
+
+
+
+
+
+
 </script>
 </body>
 </html>
